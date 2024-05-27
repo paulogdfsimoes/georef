@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mapa Interativo com Leaflet</title>
+    <title>Mapa de Portugal com Concelhos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,17 +17,27 @@
 
     <!-- Inclui o JavaScript do Leaflet -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Inclui o GeoJSON dos concelhos -->
+    <script src="https://raw.githubusercontent.com/username/username.github.io/main/concelhos-portugal.geojson"></script>
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        var map = L.map('map').setView([39.5, -8.0], 7);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker([51.5, -0.09]).addTo(map)
-            .bindPopup('Um marcador fácil de usar.')
-            .openPopup();
+        fetch('https://raw.githubusercontent.com/username/username.github.io/main/concelhos-portugal.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: function (feature) {
+                        return { color: "#ff0000" };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.NAME_2);
+                    }
+                }).addTo(map);
+            });
     </script>
 </body>
 </html>
-
