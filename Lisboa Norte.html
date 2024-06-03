@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa dos Concelhos de Portugal</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Incluindo o Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Incluindo o Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        #map {
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapa dos Concelhos: Alenquer, Azambuja, Arruda dos Vinhos, Vila Franca de Xira</h1>
+    <div id="map"></div>
+
+    <script>
+        // Inicializando o mapa
+        var map = L.map('map').setView([39.0, -9.0], 10); // Centralizando na região dos concelhos
+
+        // Adicionando uma camada de tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Dados GeoJSON dos concelhos
+        var concelhosGeoJSON = {
+            "type": "FeatureCollection",
+            "features": [
+                // Adicione aqui os dados GeoJSON dos concelhos
+                // Exemplo de uma feature para Alenquer:
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "name": "Alenquer"
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                // Adicione as coordenadas aqui
+                                [-9.0141, 39.0755],
+                                [-9.0063, 39.0669],
+                                // Mais coordenadas aqui
+                                [-9.0141, 39.0755]
+                            ]
+                        ]
+                    }
+                },
+                // Adicione mais concelhos aqui
+            ]
+        };
+
+        // Adicionando a camada GeoJSON ao mapa
+        L.geoJSON(concelhosGeoJSON, {
+            onEachFeature: function (feature, layer) {
+                // Adicionando popups aos concelhos
+                layer.bindPopup(feature.properties.name);
+            }
+        }).addTo(map);
+    </script>
+</body>
+</html>
 
